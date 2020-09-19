@@ -4,7 +4,8 @@
 # last part of the filename - ex. "att - aug 05.csv"       #
 # Redirect output to a file to store the result and rename #
 # as CSV                                                   #
-# Version 0.2 - muster generation                          #
+# V0.2 - muster generation                                 #
+# V0.3 - bugfix duplicate entry of faculty                 #
 # Run as:                                                  #
 # `$ python attendance.py > musterFile`                    #
 # Author - Yogendra Tank                                   #
@@ -40,6 +41,7 @@ for file in os.listdir("./"):
         enroll = []
         for i in range(3,len(lines)):
                 if lines[i] == '\x00': continue
+                if "-" not in lines[i]: continue #escape duplicate entry for faculty name
                 a = lines[i].split("\t")[0].split("-")
                 name = a[-1]
                 enroll = a[-2]
