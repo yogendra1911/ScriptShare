@@ -6,8 +6,10 @@
 # as CSV                                                   #
 # V0.2 - muster generation                                 #
 # V0.3 - bugfix duplicate entry of faculty                 #
+# V0.4 - percentage attendace of students                  #
+#        auto musterfile generation                        #
 # Run as:                                                  #
-# `$ python attendance.py > musterFile`                    #
+# `$ python attendance.py`                                 #
 # Author - Yogendra Tank                                   #
 ############################################################
 
@@ -49,17 +51,26 @@ for file in os.listdir("./"):
                 att[enroll] = dt  
                 att_date = dt
     for k in att:
-        att_for_date.append(k)
-    attendance2[att_date] = att_for_date    
-print("Enrollment Number\tStudent Name",end="\t")
+        att_for_date.append(k) 
+    attendance2[att_date] = att_for_date
+
+f = open("./temp","w")     
+f.write("Enrollment Number , Student Name,")
 for date in dates:
-    print(date,end="\t")
-print()
+    f.write(date+",")
+f.write("% \n")
+#print (len(date))
 for studs in students:
-    print (studs+"\t"+students[studs],end="\t")
+    p=0
+    dt = 0
+    f.write (str(studs)+","+str(students[studs])+",")
     for date in dates:
+        dt = dt+1
         if studs in attendance2[date]:
-            print("P",end="\t")
+            f.write("P,")
+            p = p+1
         else:
-            print("A",end="\t")
-    print()
+            f.write("A,")
+    f.write(str(round((p*100)/dt,2))+"\n")
+f.close()
+os.rename("./temp","AttMuster.csv")
